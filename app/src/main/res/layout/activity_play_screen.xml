@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_play_screen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="16dp"
+    tools:context=".PlayScreen">
+
+    <View
+        android:id="@+id/mainView"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="47dp"
+        android:background="@android:color/darker_gray" />
+
+    <TableRow
+        android:id="@+id/PlayerButtonArea"
+        android:layout_width="385dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+
+        <Button
+            android:id="@+id/playerOneButton"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:onClick="onPlayerOneButtonClick"
+            android:text="P1"
+            tools:ignore="ButtonStyle" />
+
+        <Button
+            android:id="@+id/playerTwoButton"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:onClick="onPlayerTwoButtonClick"
+            android:text="P2"
+            tools:ignore="ButtonStyle" />
+
+        <Button
+            android:id="@+id/playerThreeButton"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:onClick="onPlayerThreeButtonClick"
+            android:text="P3"
+            tools:ignore="ButtonStyle" />
+
+        <Button
+            android:id="@+id/playerFourButton"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:onClick="onPlayerFourButtonClick"
+            android:text="P4"
+            tools:ignore="ButtonStyle" />
+
+        <Button
+            android:id="@+id/playerFiveButton"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:onClick="onPlayerFiveButtonClick"
+            android:text="P5"
+            tools:ignore="ButtonStyle" />
+
+        <Button
+            android:id="@+id/playerSixButton"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:onClick="onPlayerSixButtonClick"
+            android:text="P6"
+            tools:ignore="ButtonStyle" />
+    </TableRow>
+
+    <TextView
+        android:id="@+id/currentPlayerName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/PlayerButtonArea"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="Player Name"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button" />
+
+    <TextView
+        android:id="@+id/lastPlayedText"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/lastPlayedCard"
+        android:layout_alignStart="@+id/lastPlayedCard"
+        android:layout_below="@+id/currentPlayerName"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="29dp"
+        android:text="Last Played"
+        android:translationX="1dp" />
+
+    <TextView
+        android:id="@+id/cardDrawnText"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/lastPlayedText"
+        android:layout_alignBottom="@+id/lastPlayedText"
+        android:layout_alignLeft="@+id/cardDrawn"
+        android:layout_alignStart="@+id/cardDrawn"
+        android:layout_marginLeft="11dp"
+        android:layout_marginStart="11dp"
+        android:text="Card Drawn" />
+
+    <ImageView
+        android:id="@+id/lastPlayedCard"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/lastPlayedText"
+        android:padding="5dp"
+        app:srcCompat="@drawable/card_back" />
+
+    <ImageView
+        android:id="@+id/cardDrawn"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/cardDrawnText"
+        android:padding="5dp"
+        app:srcCompat="@drawable/card_back" />
+
+    <GridLayout
+        android:id="@+id/gridLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/lastPlayedCard"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:translationY="100dp">
+
+        <TextView
+            android:id="@+id/readyText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_columnSpan="2"
+            android:layout_row="0"
+            android:gravity="center_horizontal"
+            android:text="Player 1 Turn"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+        <Button
+            android:id="@+id/readyButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_columnSpan="2"
+            android:layout_gravity="center_horizontal"
+            android:layout_row="1"
+            android:onClick="onReadyButtonClick"
+            android:text="Begin Turn" />
+
+        <Button
+            android:id="@+id/drawCardButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_columnSpan="2"
+            android:layout_gravity="center_horizontal"
+            android:layout_row="1"
+            android:onClick="onDrawCardClick"
+            android:text="Draw Card"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/endTurnButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_columnSpan="2"
+            android:layout_gravity="center_horizontal"
+            android:layout_row="1"
+            android:onClick="onEndTurnButtonClick"
+            android:text="End Turn"
+            android:visibility="invisible" />
+
+    </GridLayout>
+
+    <Button
+        android:id="@+id/fullSwapButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:onClick="onFullSwapButtonClick"
+        android:text="Swap"
+        android:translationX="135dp"
+        android:translationY="300dp"
+        android:visibility="invisible" />
+
+    <GridLayout
+        android:id="@+id/gridLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true">
+
+        <ImageView
+            android:id="@+id/cardThree"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_column="1"
+            android:layout_row="0"
+            android:padding="5dp"
+            app:srcCompat="@drawable/card_back" />
+
+        <ImageView
+            android:id="@+id/cardOne"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_column="0"
+            android:layout_row="1"
+            android:padding="5dp"
+            app:srcCompat="@drawable/card_back" />
+
+        <ImageView
+            android:id="@+id/cardTwo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignTop="@+id/cardDrawn"
+            android:layout_column="0"
+            android:layout_row="0"
+            android:layout_toEndOf="@+id/cardDrawn"
+            android:layout_toRightOf="@+id/cardDrawn"
+            android:padding="5dp"
+            app:srcCompat="@drawable/card_back" />
+
+        <ImageView
+            android:id="@+id/cardFour"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentBottom="true"
+            android:layout_column="1"
+            android:layout_row="1"
+            android:layout_toEndOf="@+id/cardDrawnText"
+            android:layout_toRightOf="@+id/cardDrawnText"
+            android:padding="5dp"
+            app:srcCompat="@drawable/card_back" />
+
+    </GridLayout>
+
+    <ImageView
+        android:id="@+id/cardFive"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignTop="@+id/cardSix"
+        android:layout_toLeftOf="@+id/gridLayout2"
+        android:layout_toStartOf="@+id/gridLayout2"
+        android:padding="5dp"
+        app:srcCompat="@drawable/card_back" />
+
+    <ImageView
+        android:id="@+id/cardSix"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignTop="@+id/gridLayout2"
+        android:layout_marginTop="48dp"
+        android:layout_toEndOf="@+id/gridLayout2"
+        android:layout_toRightOf="@+id/gridLayout2"
+        android:padding="5dp"
+        app:srcCompat="@drawable/card_back" />
+
+    <Button
+        android:id="@+id/messageBoardButton"
+        android:layout_width="90dp"
+        android:layout_height="50dp"
+        android:layout_above="@+id/cardDrawnText"
+        android:layout_alignEnd="@+id/lastPlayedText"
+        android:layout_alignRight="@+id/lastPlayedText"
+        android:onClick="onMessageBoardButtonClick"
+        android:text="Message Board" />
+
+</RelativeLayout>

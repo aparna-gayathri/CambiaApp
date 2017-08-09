@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_player_name"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    tools:context=".PlayerName">
+
+    <TextView
+        android:id="@+id/playerNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="Enter a name for each player"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button" />
+
+    <TextView
+        android:id="@+id/playerOneText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/playerOneInput"
+        android:layout_alignBottom="@+id/playerOneInput"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:text="Player 1" />
+
+    <TextView
+        android:id="@+id/playerTwoText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/playerTwoInput"
+        android:layout_alignBottom="@+id/playerTwoInput"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:text="Player 2" />
+
+    <TextView
+        android:id="@+id/playerThreeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/playerThreeInput"
+        android:layout_alignBottom="@+id/playerThreeInput"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:text="Player 3" />
+
+    <TextView
+        android:id="@+id/playerFourText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/playerFourInput"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="10dp"
+        android:text="Player 4" />
+
+    <TextView
+        android:id="@+id/playerFiveText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/playerFiveInput"
+        android:layout_alignEnd="@+id/playerFourText"
+        android:layout_alignRight="@+id/playerFourText"
+        android:layout_marginBottom="10dp"
+        android:text="Player 5" />
+
+    <TextView
+        android:id="@+id/playerSixText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/playerFiveText"
+        android:layout_alignRight="@+id/playerFiveText"
+        android:layout_alignTop="@+id/playerSixInput"
+        android:layout_marginTop="10dp"
+        android:text="Player 6" />
+
+    <EditText
+        android:id="@+id/playerThreeInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/playerFourInput"
+        android:layout_alignStart="@+id/playerFourInput"
+        android:layout_below="@+id/playerTwoInput"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/playerTwoInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/playerThreeInput"
+        android:layout_alignStart="@+id/playerThreeInput"
+        android:layout_below="@+id/playerOneInput"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/playerFourInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/playerFiveInput"
+        android:layout_alignStart="@+id/playerFiveInput"
+        android:layout_below="@+id/playerThreeInput"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/playerFiveInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/playerNameText"
+        android:layout_alignStart="@+id/playerNameText"
+        android:layout_below="@+id/playerFourInput"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/playerSixInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/playerFiveInput"
+        android:layout_alignStart="@+id/playerFiveInput"
+        android:layout_below="@+id/playerFiveInput"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <Button
+        android:id="@+id/continueButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:onClick="onPlayerNameClick"
+        android:text="Continue" />
+
+    <EditText
+        android:id="@+id/playerOneInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/playerTwoInput"
+        android:layout_alignStart="@+id/playerTwoInput"
+        android:layout_below="@+id/playerNameText"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+</RelativeLayout>
