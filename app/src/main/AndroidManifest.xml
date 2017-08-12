@@ -20,7 +20,9 @@
         <activity android:name=".PlayerName" />
         <activity android:name=".PlayScreen" />
         <activity android:name=".MessageBoard2" />
-        <activity android:name=".MessageBoard"></activity>
+        <activity android:name=".MessageBoard" />
+        <activity android:name=".PlaySettings" />
+        <activity android:name=".EndScreen"></activity>
     </application>
 
 </manifest>

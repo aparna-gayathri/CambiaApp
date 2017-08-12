@@ -16,6 +16,7 @@ import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -35,9 +36,10 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
     //VARIABLE NAMES AND BASIC INITIALIZATION
 
     //For testing purposes
-    private static final String TAG = "ngeorgian.cambia";
+    private static final String CREATION = "ngeorgian.cambiaapp";
     //Numbers for adjusting player button widths
     final float twoPlayerWidth = 180, threePlayerWidth = 120, fourPlayerWidth = 90, fivePlayerWidth = 72;
+
     //The different names for the card ImageViews
     ImageView cardDrawn, lastPlayed, cardOneImageView, cardTwoImageView, cardThreeImageView, cardFourImageView, cardFiveImageView, cardSixImageView;
     String playerOneName = "";
@@ -47,6 +49,7 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
     String playerFiveName = "";
     String playerSixName = "";
     int playerCount = 0;
+
     //References to different player buttons that switch between hands
     Button playerOneButton;
     Button playerTwoButton;
@@ -54,41 +57,55 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
     Button playerFourButton;
     Button playerFiveButton;
     Button playerSixButton;
+
     //Initialize readyButton and promptText (button that starts a player's turn)
     Button readyButton;
     TextView promptText;
+
     //Initialize In-Game Buttons
     Button drawCardButton;
     Button endTurnButton;
     Button fullSwapButton;
+
     //Initialize MessageBoard Button
     Button messageBoardButton;
+
     //Initialize the name and number for the player name displayed on top of screen (number used for referencing the player's hand)
     TextView currentPlayerName;
     int currentPlayerDisplay = 0;
+
     //Setup for creating the deck
     DeckUtilities du = new DeckUtilities();
     String[] strings = new String[56];
     Card[] deck = new Card[56];
+
     //Initializes withdraw pile and player hands variables as well as the deck status variable.
     Card[] withdrawPile = new Card[56];
     Card[][] playerHands = new Card[6][6];
     int deckStatus = 0;
+
     //Last played card && card drawn
     Card withdraw;
     Card next;
+
     //The player who's current turn it is
     int playerTurn = 1;
+    String playerTurnName = "";
+
     //Booleans to help keep track of current game conditions:
-    boolean cardDrew, discard, cardDrawnPlayed, playerReady,
+    boolean cardDrew, discard, cardDrawnPlayed, playerReady, cambiaSet,
             cardOneNull, cardTwoNull, cardThreeNull, cardFourNull, cardFiveNull, cardSixNull,
-            lookSelf, lookOther, blindSwapSelf, blindSwapOther, fullSwapSelf, fullSwapOther, fullSwapSwitch = false;
+            lookSelf, lookOther, blindSwapSelf, blindSwapOther, fullSwapSelf, fullSwapOther, fullSwapSwitch,
+            playerNameInMessage = false;
+
     //Pointers for swap cards
     Card swapCard, swapCard2 = null;
     int swapPlayer, swapCardNumber, swap2Player, swapCard2Number = 0;     //Handler for two-second timer
     Handler tsTimer;
+
     //Strings for Message board
     String tempMessage, playerOneMessage, playerTwoMessage, playerThreeMessage, playerFourMessage, playerFiveMessage, playerSixMessage = "";
+
     //Queue that stores the messages for the message board
     int queueSize = 0;
     Queue<String> messageQueue = new LinkedList<>();
@@ -315,6 +332,8 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
         //Removes penalty card image views
         playerButtonClick(1);
         playerButtonClick(0);
+
+        playerTurnName = playerOneName;
     }
 
     //Begins a player's turn by removing unnecessary buttons / text and displaying draw card button
@@ -322,14 +341,6 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
         playerReady = true;
         readyButton.setVisibility(View.INVISIBLE);
         promptText.setVisibility(View.INVISIBLE);
-        //TESTING
-        /*
-        String boldText = "id";
-        String normalText = "name";
-        SpannableString str = new SpannableString(boldText + normalText);
-        str.setSpan(new StyleSpan(Typeface.BOLD), 0, boldText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        promptText.setText(str);
-        promptText.setVisibility(view.VISIBLE); */
 
         drawCardButton.setVisibility(View.VISIBLE);
         updateImageViews();
@@ -358,6 +369,7 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
         fullSwapSelf = false;
         fullSwapOther = false;
         fullSwapSwitch = false;
+        playerNameInMessage = false;
         endTurnButton.setVisibility(View.INVISIBLE);
         fullSwapButton.setVisibility(View.INVISIBLE);
 
@@ -426,6 +438,44 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
         messageBoardIntent.putExtra("messageFive", messageFive);
 
         startActivityForResult(messageBoardIntent, 1);
+    }
+
+    //If the player clicks the Cambia button
+    public void onCambiaButtonClick() {
+        if (cambiaSet == false) {
+            Toast.makeText(this, "Click the Cambia button again to call Cambia", Toast.LENGTH_SHORT);
+            cambiaSet = true;
+        } else {
+            int cambiaCaller = playerTurn;
+            int playerOneScore, playerTwoScore, playerThreeScore, playerFourScore, playerFiveScore, playerSixScore = 0;
+            playerOneScore = playerScore(0);
+            playerTwoScore = playerScore(1);
+            playerThreeScore = playerScore(2);
+            playerFourScore = playerScore(3);
+            playerFiveScore = playerScore(4);
+            playerSixScore = playerScore(5);
+
+            Intent endScreenIntent = new Intent(this, EndScreen.class);
+            Bundle extras = new Bundle();
+
+            extras.putInt("cambiaCaller", cambiaCaller);
+            extras.putInt("playerCount", playerCount);
+            extras.putInt("playerOneScore", playerOneScore);
+            extras.putInt("playerTwoScore", playerTwoScore);
+            extras.putInt("playerThreeScore", playerThreeScore);
+            extras.putInt("playerFourScore", playerFourScore);
+            extras.putInt("playerFiveScore", playerFiveScore);
+            extras.putInt("playerSixScore", playerSixScore);
+            extras.putString("playerOneName", playerOneName);
+            extras.putString("playerTwoName", playerTwoName);
+            extras.putString("playerThreeName", playerThreeName);
+            extras.putString("playerFourName", playerFourName);
+            extras.putString("playerFiveName", playerFiveName);
+            extras.putString("playerSixName", playerSixName);
+
+            endScreenIntent.putExtras(extras);
+            startActivity(endScreenIntent);
+        }
     }
 
     //Player Button Listeners
@@ -521,12 +571,12 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
 
                     //If player plays card from drawn card
                     if (view == cardDrawn) {
+                        updateMessages(3, next.getString());
                         //Seven or eight is player looks at one of his/her own card
                         if (next.getString().contains("7") || next.getString().contains("8")) {
                             promptText.setText("Look at one of your own cards");
                             promptText.setVisibility(View.VISIBLE);
                             lookSelf = true;
-                            updateMessages(3, next.getString());
                         }
 
                         //Nine or ten is player looks at someone else's card
@@ -562,32 +612,32 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
                     if (view == cardOneImageView && discard == false) {
                         if (compareCards(playerHands[currentPlayerDisplay][0].getString(), withdraw.getString()) == 0) {
                             discard(0);
-                        }
+                        } else addPenaltyCard();
                     }
                     if (view == cardTwoImageView && discard == false) {
                         if (compareCards(playerHands[currentPlayerDisplay][1].getString(), withdraw.getString()) == 0) {
                             discard(1);
-                        }
+                        } else addPenaltyCard();
                     }
                     if (view == cardThreeImageView && discard == false) {
                         if (compareCards(playerHands[currentPlayerDisplay][2].getString(), withdraw.getString()) == 0) {
                             discard(2);
-                        }
+                        } else addPenaltyCard();
                     }
                     if (view == cardFourImageView && discard == false) {
                         if (compareCards(playerHands[currentPlayerDisplay][3].getString(), withdraw.getString()) == 0) {
                             discard(3);
-                        }
+                        } else addPenaltyCard();
                     }
                     if (view == cardFiveImageView && discard == false) {
                         if (compareCards(playerHands[currentPlayerDisplay][4].getString(), withdraw.getString()) == 0) {
                             discard(4);
-                        }
+                        } else addPenaltyCard();
                     }
                     if (view == cardSixImageView && discard == false) {
                         if (compareCards(playerHands[currentPlayerDisplay][5].getString(), withdraw.getString()) == 0) {
                             discard(5);
-                        }
+                        } else addPenaltyCard();
                     }
                 }
                 //make view visible as we set visibility to invisible while starting drag
@@ -816,23 +866,29 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
     //Helper Method that sets readyText to next player name
     private void setReadyText() {
         if (playerTurn == 1) {
-            promptText.setText(playerTwoName + "s turn");
+            promptText.setText(playerTwoName + "'s turn");
             playerTurn++;
+            playerTurnName = playerTwoName;
         } else if (playerTurn == 2 && playerCount > 2) {
-            promptText.setText(playerThreeName + "s turn");
+            promptText.setText(playerThreeName + "'s turn");
             playerTurn++;
+            playerTurnName = playerThreeName;
         } else if (playerTurn == 3 && playerCount > 3) {
-            promptText.setText(playerFourName + "s turn");
+            promptText.setText(playerFourName + "'s turn");
             playerTurn++;
+            playerTurnName = playerFourName;
         } else if (playerTurn == 4 && playerCount > 4) {
-            promptText.setText(playerFiveName + "s turn");
+            promptText.setText(playerFiveName + "'s turn");
             playerTurn++;
+            playerTurnName = playerFiveName;
         } else if (playerTurn == 5 && playerCount > 5) {
-            promptText.setText(playerSixName + "s turn");
+            promptText.setText(playerSixName + "'s turn");
             playerTurn++;
+            playerTurnName = playerSixName;
         } else {
-            promptText.setText(playerOneName + "s turn");
+            promptText.setText(playerOneName + "'s turn");
             playerTurn = 1;
+            playerTurnName = playerOneName;
         }
     }
 
@@ -858,7 +914,8 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
 
     //Helper method that reveals a card until the end of the player's turn
     private void revealCard(int player, int card) {
-        updateMessages(4, card);
+        if (lookOther == true || fullSwapOther == true) updateMessages(7, card);
+        else updateMessages(4, card);
         playerHands[player][card].setRevealed(true);
         if (card == 0) cardOneImageView.setImageDrawable(playerHands[player][card].getImage());
         if (card == 1) cardTwoImageView.setImageDrawable(playerHands[player][card].getImage());
@@ -923,11 +980,13 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
 
                 playerHands[player][card] = swapCard;
                 playerHands[swapPlayer][swapCardNumber] = tempCard;
+                updateMessages(9, swapCardNumber, card);
             } else if (fullSwapSwitch == true) {
                 fullSwapSwitch = false;
 
                 playerHands[swap2Player][swapCard2Number] = swapCard;
                 playerHands[swapPlayer][swapCardNumber] = swapCard2;
+                updateMessages(10);
 
                 //Resets the view to the proper cards
                 if (currentPlayerDisplay == 0) {
@@ -1042,6 +1101,8 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
         playerHands[currentPlayerDisplay][card].setRevealed(true);
         withdraw = playerHands[currentPlayerDisplay][card];
         lastPlayed.setImageDrawable(playerHands[currentPlayerDisplay][card].getImage());
+        if (currentPlayerDisplay + 1 == playerTurn) updateMessages(8, card);
+        else updateMessages(11, card);
 
         if (card == 0) cardOneImageView.setImageDrawable(null);
         if (card == 1) cardTwoImageView.setImageDrawable(null);
@@ -1114,12 +1175,32 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
             else if (playerTurn == 6) messageQueue.offer(playerSixMessage);
             return;
         }
+        //If the player is penalized while having too many cards
+        if (key == 6) {
+            if (playerNameInMessage == false) {
+                tempMessage = playerTurnName + ":";
+                playerNameInMessage = true;
+            } else tempMessage += " " + playerTurnName;
+
+            tempMessage += " has too many cards and had their turn ended by penalty.";
+        }
+        //If the player performs a full swap
+        if (key == 10) {
+            if (playerNameInMessage == false) {
+                tempMessage = playerTurnName + ":";
+                playerNameInMessage = true;
+            } else tempMessage += " " + playerTurnName;
+
+            tempMessage += " chose to swap.";
+        }
     }
 
-    //Helper method that updates the player's message String based on what they did that turn
+    //Helper method that updates the player's message String based on what they did that turn (For single-card-effect actions)
     private void updateMessages(int key, int card) {
-
-        tempMessage = currentPlayerName.getText().toString() + ":";
+        if (playerNameInMessage == false) {
+            tempMessage = playerTurnName + ":";
+            playerNameInMessage = true;
+        } else tempMessage += " " + playerTurnName;
 
         //If player takes last played
         if (key == 1) {
@@ -1133,14 +1214,49 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
         if (key == 4) {
             tempMessage += " looked at their " + cardPosition(card) + ".";
         }
+        //If the player obtains a penalty card
+        if (key == 5) {
+            tempMessage += " received a penalty card. It is now their " + cardPosition(card) + ".";
+        }
+        //If the player looks at another person's card
+        if (key == 7) {
+            tempMessage += " looked at " + currentPlayerName.getText().toString() + "'s " + cardPosition(card) + ".";
+        }
+        //If the player discards a card of their own
+        if (key == 8) {
+            tempMessage += " discarded their " + cardPosition(card);
+        }
+        //If the player discards a card from someone else's hand
+        if (key == 11) {
+            tempMessage += " discarded " + currentPlayerName.getText().toString() + "'s " + cardPosition(card);
+        }
+
     }
 
-    //Helper method that updates the player's message String based on what they did that turn
+    //Helper method that updates the player's message String based on what they did that turn (for multi-card-effect actions)
+    private void updateMessages(int key, int card1, int card2) {
+        if (playerNameInMessage == false) {
+            tempMessage = playerTurnName + ":";
+            playerNameInMessage = true;
+        } else tempMessage += " " + playerTurnName;
+
+        //If player blind swaps
+        if (key == 9) {
+            tempMessage += " chose their " + cardPosition(card1) + " and " + currentPlayerName.getText().toString() + "'s " + cardPosition(card2) + " to be swapped.";
+        }
+    }
+
+    //Helper method that updates the player's message String based on what they did that turn (for when a card is played)
     private void updateMessages(int key, String card) {
-        tempMessage = currentPlayerName.getText().toString() + ":";
-        //If player plays a seven or eight
+        if (playerNameInMessage == false) {
+            tempMessage = playerTurnName + ":";
+            playerNameInMessage = true;
+        } else tempMessage += " " + playerTurnName;
+
+        //If player plays a card with a power
         if (key == 3) {
-            tempMessage += "played a " + card;
+            if (card.toString().contains("8")) tempMessage += " played an " + card + ".";
+            else tempMessage += " played a " + card + ".";
         }
     }
 
@@ -1150,8 +1266,8 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
         else if (card == 1) return "top left card";
         else if (card == 2) return "top right card";
         else if (card == 3) return "bottom right card";
-        else if (card == 4) return "left penalty card";
-        else return "right penalty card";
+        else if (card == 4) return "leftmost card";
+        else return "rightmost card";
     }
 
     //Helper method that changes a player's message to a new one
@@ -1171,6 +1287,76 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
         while (messageQueueIterator.hasNext())
             newQueue.offer(new SpannableString(messageQueueIterator.next()));
         return newQueue;
+    }
+
+    //Adds a penalty card to the current player's hand
+    private void addPenaltyCard() {
+        if (playerHands[playerTurn - 1][0] == null) {
+            playerHands[playerTurn - 1][0] = deck[deckStatus];
+            deckStatus++;
+            updateImageViews();
+            updateMessages(5, 0);
+        } else if (playerHands[playerTurn - 1][1] == null) {
+            playerHands[playerTurn - 1][1] = deck[deckStatus];
+            deckStatus++;
+            updateImageViews();
+            updateMessages(5, 1);
+        } else if (playerHands[playerTurn - 1][2] == null) {
+            playerHands[playerTurn - 1][2] = deck[deckStatus];
+            deckStatus++;
+            updateImageViews();
+            updateMessages(5, 2);
+        } else if (playerHands[playerTurn - 1][3] == null) {
+            playerHands[playerTurn - 1][3] = deck[deckStatus];
+            deckStatus++;
+            updateImageViews();
+            updateMessages(5, 3);
+        } else if (playerHands[playerTurn - 1][4] == null) {
+            playerHands[playerTurn - 1][4] = deck[deckStatus];
+            deckStatus++;
+            updateImageViews();
+            updateMessages(5, 4);
+        } else if (playerHands[playerTurn - 1][5] == null) {
+            playerHands[playerTurn - 1][5] = deck[deckStatus];
+            deckStatus++;
+            updateImageViews();
+            updateMessages(5, 5);
+        }
+
+        //If player has too many cards (6 cards total), their penalty is the ending of their turn
+        else {
+            Context context = getApplicationContext();
+            CharSequence text = "Since you have too many penalty cards, your turn has ended!";
+            int duration = Toast.LENGTH_LONG;
+
+            Toast penaltyToast = Toast.makeText(context, text, duration);
+            penaltyToast.show();
+            updateMessages(6);
+            onEndTurnButtonClick(findViewById(R.id.activity_play_screen));
+        }
+    }
+
+    //Adds up total scores for each player after cambia has been called
+    private int playerScore(int player) {
+        int score = 0;
+        for (int counter = 0; counter < 5; counter++)
+            score += cardValue(playerHands[player][counter]);
+        return score;
+    }
+
+    //Returns the integer number value of a card
+    private int cardValue(Card card) {
+        if (card.getString().contains("Joker")) return 0;
+        else if (card.getString().contains("Ace")) return 1;
+        else if (card.getString().contains("2")) return 2;
+        else if (card.getString().contains("3")) return 3;
+        else if (card.getString().contains("4")) return 4;
+        else if (card.getString().contains("5")) return 5;
+        else if (card.getString().contains("6")) return 6;
+        else if (card.getString().contains("7")) return 7;
+        else if (card.getString().contains("8")) return 8;
+        else if (card.getString().contains("9")) return 9;
+        else return 10;
     }
 }
 

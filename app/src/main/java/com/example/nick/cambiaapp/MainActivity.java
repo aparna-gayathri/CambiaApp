@@ -14,7 +14,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onPlayClick(View view) {
-        Intent i = new Intent(this, PlayerCount.class);
+        //Intent i = new Intent(this, PlayerCount.class);
+        Intent i = new Intent(this, PlaySettings.class);
         startActivity(i);
     }
 

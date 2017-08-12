@@ -17,6 +17,15 @@
         android:layout_marginTop="47dp"
         android:background="@android:color/darker_gray" />
 
+    <Button
+        android:id="@+id/cambiaButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:layout_marginTop="55dp"
+        android:onClick="onCambiaButtonClick"
+        android:text="Cambia!" />
+
     <TableRow
         android:id="@+id/PlayerButtonArea"
         android:layout_width="385dp"

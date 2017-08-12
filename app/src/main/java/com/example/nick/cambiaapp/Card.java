@@ -33,14 +33,6 @@ public class Card {
         cardImage = image;
     }
 
-    public boolean getAvailability() {
-        return availability;
-    }
-
-    public void setAvailability(boolean a) {
-        availability = a;
-    }
-
     public boolean getRevealed() {
         return revealed;
     }
