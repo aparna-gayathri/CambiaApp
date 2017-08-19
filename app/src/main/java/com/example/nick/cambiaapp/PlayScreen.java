@@ -36,7 +36,7 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
     //VARIABLE NAMES AND BASIC INITIALIZATION
 
     //For testing purposes
-    private static final String CREATION = "ngeorgian.cambiaapp";
+    private static final String TAG = "ngeorgian.cambiaapp";
     //Numbers for adjusting player button widths
     final float twoPlayerWidth = 180, threePlayerWidth = 120, fourPlayerWidth = 90, fivePlayerWidth = 72;
 
@@ -94,13 +94,14 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
 
     //Booleans to help keep track of current game conditions:
     boolean cardDrew, discard, cardDrawnPlayed, playerReady, cambiaSet,
+            playerOneFirstTurn, playerTwoFirstTurn, playerThreeFirstTurn, playerFourFirstTurn, playerFiveFirstTurn, playerSixFirstTurn,
             cardOneNull, cardTwoNull, cardThreeNull, cardFourNull, cardFiveNull, cardSixNull,
-            lookSelf, lookOther, blindSwapSelf, blindSwapOther, fullSwapSelf, fullSwapOther, fullSwapSwitch,
+            lookSelf, lookOther, blindSwapSelf, blindSwapOther, fullSwapSelf, fullSwapOther, fullSwapSwitch, discardOther,
             playerNameInMessage = false;
 
     //Pointers for swap cards
     Card swapCard, swapCard2 = null;
-    int swapPlayer, swapCardNumber, swap2Player, swapCard2Number = 0;     //Handler for two-second timer
+    int swapPlayer, swapCardNumber, swap2Player, swapCard2Number, discardPlayer, discardCardNumber = 0;     //Handler for two-second timer
     Handler tsTimer;
 
     //Strings for Message board
@@ -338,6 +339,61 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
 
     //Begins a player's turn by removing unnecessary buttons / text and displaying draw card button
     public void onReadyButtonClick(View view) {
+
+        if (playerOneFirstTurn == false && playerTurn == 1) {
+            playerOneFirstTurn = true;
+            playerHands[0][0].setRevealed(true);
+            playerHands[0][3].setRevealed(true);
+            updateImageViews();
+            Toast.makeText(this, "Click the ready button again to continue", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (playerTwoFirstTurn == false && playerTurn == 2) {
+            playerTwoFirstTurn = true;
+            playerHands[1][0].setRevealed(true);
+            playerHands[1][3].setRevealed(true);
+            updateImageViews();
+            Toast.makeText(this, "Click the ready button again to continue", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (playerThreeFirstTurn == false && playerTurn == 3) {
+            playerThreeFirstTurn = true;
+            playerHands[2][0].setRevealed(true);
+            playerHands[2][3].setRevealed(true);
+            updateImageViews();
+            Toast.makeText(this, "Click the ready button again to continue", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (playerFourFirstTurn == false && playerTurn == 4) {
+            playerFourFirstTurn = true;
+            playerHands[3][0].setRevealed(true);
+            playerHands[3][3].setRevealed(true);
+            updateImageViews();
+            Toast.makeText(this, "Click the ready button again to continue", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (playerFiveFirstTurn == false && playerTurn == 5) {
+            playerFiveFirstTurn = true;
+            playerHands[4][0].setRevealed(true);
+            playerHands[4][3].setRevealed(true);
+            updateImageViews();
+            Toast.makeText(this, "Click the ready button again to continue", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (playerSixFirstTurn == false && playerTurn == 6) {
+            playerSixFirstTurn = true;
+            playerHands[5][0].setRevealed(true);
+            playerHands[5][3].setRevealed(true);
+            updateImageViews();
+            Toast.makeText(this, "Click the ready button again to continue", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        for (int counter = 0; counter < playerCount; counter++) {
+            if (playerHands[counter][0] != null) playerHands[counter][0].setRevealed(false);
+            if (playerHands[counter][3] != null) playerHands[counter][3].setRevealed(false);
+            updateImageViews();
+        }
+
         playerReady = true;
         readyButton.setVisibility(View.INVISIBLE);
         promptText.setVisibility(View.INVISIBLE);
@@ -370,6 +426,7 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
         fullSwapOther = false;
         fullSwapSwitch = false;
         playerNameInMessage = false;
+        cambiaSet = false;
         endTurnButton.setVisibility(View.INVISIBLE);
         fullSwapButton.setVisibility(View.INVISIBLE);
 
@@ -382,6 +439,7 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
                 if (playerHands[player][card] != null) playerHands[player][card].setRevealed(false);
             }
         }
+
 
         //Updates the queue for the message board
         if (messageQueue.size() == playerCount - 1) {
@@ -405,7 +463,6 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
         if (playerTurn == 5) onPlayerFiveButtonClick(view);
         if (playerTurn == 6) onPlayerSixButtonClick(view);
         promptText.setVisibility(View.VISIBLE);
-
     }
 
     //If player plays a King and decides to swap the cards
@@ -441,9 +498,9 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
     }
 
     //If the player clicks the Cambia button
-    public void onCambiaButtonClick() {
+    public void onCambiaButtonClick(View view) {
         if (cambiaSet == false) {
-            Toast.makeText(this, "Click the Cambia button again to call Cambia", Toast.LENGTH_SHORT);
+            Toast.makeText(this, "Click the Cambia button again to call Cambia", Toast.LENGTH_LONG).show();
             cambiaSet = true;
         } else {
             int cambiaCaller = playerTurn;
@@ -611,31 +668,61 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
                     //If player tries to discard
                     if (view == cardOneImageView && discard == false) {
                         if (compareCards(playerHands[currentPlayerDisplay][0].getString(), withdraw.getString()) == 0) {
+                            if (currentPlayerDisplay + 1 != playerTurn) {
+                                discardOther = true;
+                                discardPlayer = currentPlayerDisplay;
+                                discardCardNumber = 0;
+                            }
                             discard(0);
                         } else addPenaltyCard();
                     }
                     if (view == cardTwoImageView && discard == false) {
                         if (compareCards(playerHands[currentPlayerDisplay][1].getString(), withdraw.getString()) == 0) {
+                            if (currentPlayerDisplay + 1 != playerTurn) {
+                                discardOther = true;
+                                discardPlayer = currentPlayerDisplay;
+                                discardCardNumber = 1;
+                            }
                             discard(1);
                         } else addPenaltyCard();
                     }
                     if (view == cardThreeImageView && discard == false) {
                         if (compareCards(playerHands[currentPlayerDisplay][2].getString(), withdraw.getString()) == 0) {
+                            if (currentPlayerDisplay + 1 != playerTurn) {
+                                discardOther = true;
+                                discardPlayer = currentPlayerDisplay;
+                                discardCardNumber = 2;
+                            }
                             discard(2);
                         } else addPenaltyCard();
                     }
                     if (view == cardFourImageView && discard == false) {
                         if (compareCards(playerHands[currentPlayerDisplay][3].getString(), withdraw.getString()) == 0) {
+                            if (currentPlayerDisplay + 1 != playerTurn) {
+                                discardOther = true;
+                                discardPlayer = currentPlayerDisplay;
+                                discardCardNumber = 3;
+                            }
                             discard(3);
                         } else addPenaltyCard();
                     }
                     if (view == cardFiveImageView && discard == false) {
                         if (compareCards(playerHands[currentPlayerDisplay][4].getString(), withdraw.getString()) == 0) {
+                            if (currentPlayerDisplay + 1 != playerTurn) {
+                                discardOther = true;
+                                discardPlayer = currentPlayerDisplay;
+                                discardCardNumber = 4;
+                            }
                             discard(4);
                         } else addPenaltyCard();
                     }
                     if (view == cardSixImageView && discard == false) {
                         if (compareCards(playerHands[currentPlayerDisplay][5].getString(), withdraw.getString()) == 0) {
+                            if (currentPlayerDisplay + 1 != playerTurn) {
+                                discardOther = true;
+                                discardPlayer = currentPlayerDisplay;
+                                discardCardNumber = 5;
+                            }
                             discard(5);
                         } else addPenaltyCard();
                     }
@@ -665,10 +752,59 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
         if (view == lastPlayed && (playerReady == false || cardDrew == true)) return false;
         if (view == cardDrawn && cardDrawn.getDrawable() == null) return false;
 
-        //If a player is using a self-look power (played a seven or eight)
+        //Discarding another person's
+        if (discardOther == true) {
+            //Card One
+            if (view == cardOneImageView && cardOneImageView.getDrawable() == playerHands[playerTurn - 1][0].getImage()) {
+                giveCard(playerTurn - 1, 0, discardPlayer, discardCardNumber);
+                return true;
+            } else if (view == cardOneImageView && cardOneImageView.getDrawable() != playerHands[playerTurn - 1][0].getImage())
+                faultText(0);
+
+            //Card Two
+            if (view == cardTwoImageView && cardTwoImageView.getDrawable() == playerHands[playerTurn - 1][1].getImage()) {
+                giveCard(playerTurn - 1, 1, discardPlayer, discardCardNumber);
+                return true;
+            } else if (view == cardTwoImageView && cardTwoImageView.getDrawable() != playerHands[playerTurn - 1][1].getImage())
+                faultText(0);
+
+            //Card Three
+            if (view == cardThreeImageView && cardThreeImageView.getDrawable() == playerHands[playerTurn - 1][2].getImage()) {
+                giveCard(playerTurn - 1, 2, discardPlayer, discardCardNumber);
+                return true;
+            } else if (view == cardThreeImageView && cardThreeImageView.getDrawable() != playerHands[playerTurn - 1][2].getImage())
+                faultText(0);
+
+            //Card Four
+            if (view == cardFourImageView && cardFourImageView.getDrawable() == playerHands[playerTurn - 1][3].getImage()) {
+                giveCard(playerTurn - 1, 3, discardPlayer, discardCardNumber);
+                return true;
+            } else if (view == cardFourImageView && cardFourImageView.getDrawable() != playerHands[playerTurn - 1][3].getImage())
+                faultText(0);
+
+            //Card Five
+            if (view == cardFiveImageView && cardFiveImageView.getDrawable() == playerHands[playerTurn - 1][4].getImage()) {
+                giveCard(playerTurn - 1, 4, discardPlayer, discardCardNumber);
+                return true;
+            } else if (view == cardFiveImageView && cardFiveImageView.getDrawable() != playerHands[playerTurn - 1][4].getImage())
+                faultText(0);
+
+            //Card Six
+            if (view == cardSixImageView && cardSixImageView.getDrawable() == playerHands[playerTurn - 1][5].getImage()) {
+                giveCard(playerTurn - 1, 5, discardPlayer, discardCardNumber);
+                return true;
+            } else if (view == cardSixImageView && cardSixImageView.getDrawable() != playerHands[playerTurn - 1][5].getImage())
+                faultText(0);
+        }
+
+        //If a player is using a self-look power (played a seven or eight) or a full swap or discarded another player's card
         if (lookSelf == true || fullSwapSelf == true) {
             //Card One
             if (view == cardOneImageView && cardOneImageView.getDrawable() == playerHands[playerTurn - 1][0].getImage()) {
+                if (discardOther == true) {
+                    giveCard(playerTurn - 1, 0, discardPlayer, discardCardNumber);
+                    return true;
+                }
                 revealCard(playerTurn - 1, 0);
                 return true;
             } else if (view == cardOneImageView && cardOneImageView.getDrawable() != playerHands[playerTurn - 1][0].getImage())
@@ -676,6 +812,10 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
 
             //Card Two
             if (view == cardTwoImageView && cardTwoImageView.getDrawable() == playerHands[playerTurn - 1][1].getImage()) {
+                if (discardOther == true) {
+                    giveCard(playerTurn - 1, 1, discardPlayer, discardCardNumber);
+                    return true;
+                }
                 revealCard(playerTurn - 1, 1);
                 return true;
             } else if (view == cardTwoImageView && cardTwoImageView.getDrawable() != playerHands[playerTurn - 1][1].getImage())
@@ -683,6 +823,10 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
 
             //Card Three
             if (view == cardThreeImageView && cardThreeImageView.getDrawable() == playerHands[playerTurn - 1][2].getImage()) {
+                if (discardOther == true) {
+                    giveCard(playerTurn - 1, 2, discardPlayer, discardCardNumber);
+                    return true;
+                }
                 revealCard(playerTurn - 1, 2);
                 return true;
             } else if (view == cardThreeImageView && cardThreeImageView.getDrawable() != playerHands[playerTurn - 1][2].getImage())
@@ -690,6 +834,10 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
 
             //Card Four
             if (view == cardFourImageView && cardFourImageView.getDrawable() == playerHands[playerTurn - 1][3].getImage()) {
+                if (discardOther == true) {
+                    giveCard(playerTurn - 1, 3, discardPlayer, discardCardNumber);
+                    return true;
+                }
                 revealCard(playerTurn - 1, 3);
                 return true;
             } else if (view == cardFourImageView && cardFourImageView.getDrawable() != playerHands[playerTurn - 1][3].getImage())
@@ -697,6 +845,10 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
 
             //Card Five
             if (view == cardFiveImageView && cardFiveImageView.getDrawable() == playerHands[playerTurn - 1][4].getImage()) {
+                if (discardOther == true) {
+                    giveCard(playerTurn - 1, 4, discardPlayer, discardCardNumber);
+                    return true;
+                }
                 revealCard(playerTurn - 1, 4);
                 return true;
             } else if (view == cardFiveImageView && cardFiveImageView.getDrawable() != playerHands[playerTurn - 1][4].getImage())
@@ -704,6 +856,10 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
 
             //Card Six
             if (view == cardSixImageView && cardSixImageView.getDrawable() == playerHands[playerTurn - 1][5].getImage()) {
+                if (discardOther == true) {
+                    giveCard(playerTurn - 1, 5, discardPlayer, discardCardNumber);
+                    return true;
+                }
                 revealCard(playerTurn - 1, 5);
                 return true;
             } else if (view == cardSixImageView && cardSixImageView.getDrawable() != playerHands[playerTurn - 1][5].getImage())
@@ -1113,6 +1269,8 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
 
         playerHands[currentPlayerDisplay][card] = null;
         if (cardDrawnPlayed == true) discard = true;
+        if (discardOther == true)
+            Toast.makeText(this, "Choose one of your cards to give to your opponent", Toast.LENGTH_LONG).show();
     }
 
     //Helper method that handles if a player decides to take last played card instead of drawing a card
@@ -1228,7 +1386,7 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
         }
         //If the player discards a card from someone else's hand
         if (key == 11) {
-            tempMessage += " discarded " + currentPlayerName.getText().toString() + "'s " + cardPosition(card);
+            tempMessage += " discarded " + currentPlayerName.getText().toString() + "'s " + cardPosition(card) + ".";
         }
 
     }
@@ -1340,7 +1498,8 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
     private int playerScore(int player) {
         int score = 0;
         for (int counter = 0; counter < 5; counter++)
-            score += cardValue(playerHands[player][counter]);
+            if (playerHands[player][counter] != null)
+                score += cardValue(playerHands[player][counter]);
         return score;
     }
 
@@ -1357,6 +1516,13 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
         else if (card.getString().contains("8")) return 8;
         else if (card.getString().contains("9")) return 9;
         else return 10;
+    }
+
+    //Gives card to another player
+    private void giveCard(int oldPlayer, int oldCardNumber, int newPlayer, int newCardNumber) {
+        playerHands[newPlayer][newCardNumber] = playerHands[oldPlayer][oldCardNumber];
+        playerHands[oldPlayer][oldCardNumber] = null;
+        updateImageViews();
     }
 }
 
