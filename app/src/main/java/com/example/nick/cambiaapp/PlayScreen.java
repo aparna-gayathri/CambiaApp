@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -539,12 +540,50 @@ public class PlayScreen extends AppCompatActivity implements OnDragListener, OnT
     public void onPlayerOneButtonClick(View view) {
         if (!playerOneName.equals(currentPlayerName.toString()))
             currentPlayerName.setText(playerOneName);
+
+        if (playerHands[0][0] != null) Log.i(TAG, playerHands[0][0].getString());
+        else Log.i(TAG, "Player 1 \n" + "This card is NULL");
+        if (playerHands[0][1] != null) Log.i(TAG, playerHands[0][1].getString());
+        else Log.i(TAG, "This card is NULL");
+        if (playerHands[0][2] != null) Log.i(TAG, playerHands[0][2].getString());
+        else Log.i(TAG, "This card is NULL");
+        if (playerHands[0][3] != null) Log.i(TAG, playerHands[0][3].getString());
+        else Log.i(TAG, "This card is NULL");
+        if (playerHands[1][0] != null) Log.i(TAG, playerHands[1][0].getString());
+        else Log.i(TAG, "Player 2: \n" + "This card is NULL");
+        if (playerHands[1][1] != null) Log.i(TAG, playerHands[1][1].getString());
+        else Log.i(TAG, "This card is NULL");
+        if (playerHands[1][2] != null) Log.i(TAG, playerHands[1][2].getString());
+        else Log.i(TAG, "This card is NULL");
+        if (playerHands[1][3] != null) Log.i(TAG, playerHands[1][3].getString());
+        else Log.i(TAG, "This card is NULL");
+
         playerButtonClick(0);
     }
 
     public void onPlayerTwoButtonClick(View view) {
         if (!playerTwoName.equals(currentPlayerName.toString()))
             currentPlayerName.setText(playerTwoName);
+
+        if (playerHands[0][0] != null) Log.i(TAG, playerHands[0][0].getString());
+        else Log.i(TAG, "Player 1 \n" + "This card is NULL");
+        if (playerHands[0][1] != null) Log.i(TAG, playerHands[0][1].getString());
+        else Log.i(TAG, "This card is NULL");
+        if (playerHands[0][2] != null) Log.i(TAG, playerHands[0][2].getString());
+        else Log.i(TAG, "This card is NULL");
+        if (playerHands[0][3] != null) Log.i(TAG, playerHands[0][3].getString());
+        else Log.i(TAG, "This card is NULL");
+        Log.i(TAG, " \n");
+        if (playerHands[1][0] != null) Log.i(TAG, playerHands[1][0].getString());
+        else Log.i(TAG, "Player 2: \n" + "This card is NULL");
+        if (playerHands[1][1] != null) Log.i(TAG, playerHands[1][1].getString());
+        else Log.i(TAG, "This card is NULL");
+        if (playerHands[1][2] != null) Log.i(TAG, playerHands[1][2].getString());
+        else Log.i(TAG, "This card is NULL");
+        if (playerHands[1][3] != null) Log.i(TAG, playerHands[1][3].getString());
+        else Log.i(TAG, "This card is NULL");
+        Log.i(TAG, " \n");
+
         playerButtonClick(1);
     }
 

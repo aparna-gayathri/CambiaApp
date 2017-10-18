@@ -2,7 +2,6 @@ package com.example.nick.cambiaapp;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.TextView;
 
 import java.util.Arrays;
@@ -65,7 +64,6 @@ public class EndScreen extends AppCompatActivity {
         }
 
         Arrays.sort(scores);
-        for (int temp : scores) Log.i("TAG", temp + "\n");
 
         for (int counter = 0; counter < playerCount; counter++) {
             if (victor == false && scores[0] < 5) {
